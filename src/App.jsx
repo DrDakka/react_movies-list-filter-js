@@ -7,10 +7,10 @@ function findMovie(moviesList, query) {
   const normalizedQuery = query.replace(/\s+/g, '').toLowerCase();
 
   const preparedMovies = moviesList.filter(({ title, description }) => {
-    const t = title.toLowerCase().replace(/\s+/g, '');
-    const d = description.toLowerCase().replace(/\s+/g, '');
-
-    return t.includes(normalizedQuery) || d.includes(normalizedQuery);
+    return (
+      title.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery) ||
+      description.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery)
+    );
   });
 
   return preparedMovies;
@@ -37,8 +37,8 @@ export const App = () => {
                 className="input"
                 placeholder="Type search word"
                 value={searchQuery}
-                onChange={event => {
-                  setSearchQuery(event.target.value);
+                onChange={changeEvent => {
+                  setSearchQuery(changeEvent.target.value);
                 }}
               />
             </div>

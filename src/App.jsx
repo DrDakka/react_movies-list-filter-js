@@ -4,14 +4,25 @@ import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
 function findMovie(moviesList, query) {
-  const normalizedQuery = query.replace(/\s+/g, '').toLowerCase();
+  const normalizedQuery = query.toLowerCase().replace(/\s+/g, '');
 
-  const preparedMovies = moviesList.filter(({ title, description }) => {
-    return (
-      title.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery) ||
-      description.toLowerCase().replace(/\s+/g, '').includes(normalizedQuery)
-    );
-  });
+  function filterCallbackFn(titleObs, descrObs) {
+    const t = titleObs
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .includes(normalizedQuery);
+    const d = descrObs
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .includes(normalizedQuery);
+
+    return t || d;
+  }
+
+  const preparedMovies = moviesList.filter(
+    ({ title, description }) => filterCallbackFn(title, description),
+    // eslint-disable-next-line function-paren-newline
+  );
 
   return preparedMovies;
 }
